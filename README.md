@@ -19,6 +19,70 @@ This project follows a layered architecture and industry-standard Spring Boot de
 
 ---
 
+# ✨ Features
+
+## 👤 Customer Module
+
+- Register Customer
+- View Customer Profile
+- View All Customers (Admin)
+- Delete Customer
+
+---
+
+## 🚖 Cab Module
+
+- Add Cab
+- Update Cab Details
+- Delete Cab
+- View All Cabs
+- View Available Cabs
+
+---
+
+## 👨‍✈️ Driver Module
+
+- Add Driver
+- Update Driver Details
+- Assign Driver to Cab
+- View All Drivers
+
+---
+
+## 📅 Booking Module
+
+- Book a Cab
+- Cancel Booking
+- View Booking History
+- View Booking Status
+- View All Bookings (Admin)
+
+---
+
+## 📊 Dashboard Module
+
+Displays overall system statistics including:
+
+- Total Customers
+- Total Drivers
+- Total Cabs
+- Available Cabs
+- Total Bookings
+
+---
+
+## 🔐 Authentication Module
+
+- User Login
+- User Logout
+- Password Encryption using BCrypt
+- Session-based Authentication
+- Spring Security Integration
+
+---
+
+
+
 ## 🛠️ Tech Stack
 
 | Technology | Version |
@@ -101,7 +165,9 @@ CabBookingApplication
 
 - users
 - customer
+- driver
 - cab
+- trip_booking
 
 Hibernate automatically creates the database tables.
 
@@ -123,28 +189,43 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ## Authentication
 
-| Method | Endpoint |
-|---------|----------|
-| POST | /auth/login |
-| POST | /auth/logout |
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/auth/login` | Login User |
+| POST | `/auth/logout` | Logout User |
 
 ---
 
 ## Customer APIs
 
-| Method | Endpoint |
-|---------|----------|
-| POST | /customers/register |
-| GET | /customers/{id} |
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/customers/register` | Register Customer |
+| GET | `/customers` | View All Customers |
+| GET | `/customers/{id}` | View Customer Profile |
+| DELETE | `/customers/{id}` | Delete Customer |
+
+---
+## Driver APIs
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/drivers` | Add Driver |
+| GET | `/drivers` | View All Drivers |
+| PUT | `/drivers/{driverId}` | Update Driver |
+| PUT | `/drivers/{driverId}/assign/{cabId}` | Assign Driver to Cab |
 
 ---
 
 ## Cab APIs
 
-| Method | Endpoint |
-|---------|----------|
-| POST | /cabs |
-| GET | /cabs |
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/cabs` | Add Cab |
+| GET | `/cabs` | View All Cabs |
+| GET | `/cabs/available` | View Available Cabs |
+| PUT | `/cabs/{cabId}` | Update Cab |
+| DELETE | `/cabs/{cabId}` | Delete Cab |
 
 ---
 
@@ -190,7 +271,62 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   "address": "Dehradun"
 }
 ```
+---
 
+# 🚀 Implemented User Stories
+
+| User Story | Description | Status |
+|------------|-------------|--------|
+| US-001 | Customer Registration | ✅ |
+| US-002 | Customer Profile | ✅ |
+| US-003 | Login | ✅ |
+| US-004 | Logout | ✅ |
+| US-005 | Add Driver | ✅ |
+| US-006 | Update Driver | ✅ |
+| US-007 | Assign Driver to Cab | ✅ |
+| US-008 | View Available Cabs | ✅ |
+| US-009 | Add Cab | ✅ |
+| US-010 | Update Cab | ✅ |
+| US-011 | Delete Cab | ✅ |
+| US-012 | Book Cab | ✅ |
+| US-013 | Cancel Booking | ✅ |
+| US-014 | Booking History | ✅ |
+| US-015 | Booking Status | ✅ |
+| US-016 | Manage Customers | ✅ |
+| US-017 | Manage Bookings | ✅ |
+| US-018 | Admin Dashboard | ✅ |
+
+---
+
+# 🔄 Request Flow
+
+```
+HTTP Request
+      │
+      ▼
+Controller
+      │
+      ▼
+Service
+      │
+      ▼
+Repository
+      │
+      ▼
+MySQL
+      │
+      ▼
+Repository
+      │
+      ▼
+Service
+      │
+      ▼
+Controller
+      │
+      ▼
+JSON Response
+```
 ---
 
 # ⚙️ How to Run
@@ -278,13 +414,19 @@ The project follows Layered Architecture for better maintainability and separati
 
 # 🚀 Future Enhancements
 
-- Driver Management
-- Cab Booking
-- Booking History
-- Booking Cancellation
-- Admin Dashboard
+- React Frontend
 - JWT Authentication
 - Role-Based Authorization
+- Online Payment Gateway
+- Google Maps Integration
+- Fare Estimation
+- Ride Tracking
+- Email Notifications
+- Driver Rating System
+- Customer Reviews
+- Ride Scheduling
+- Docker Deployment
+- CI/CD Pipeline
 
 
 ---
