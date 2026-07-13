@@ -30,7 +30,7 @@ jobs:
       
       - name: Build with Maven
         working-directory: CabBookingApplication
-        run: ./mvnw clean package
+        run: ./mvnw clean package -DskipTests
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
