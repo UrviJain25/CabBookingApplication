@@ -211,7 +211,7 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ## Add Driver
 ---
-```
+```json
 {
   "driverName": "Ramesh Kumar",
   "licenceNo": "DL123456",
@@ -224,8 +224,8 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ---
 
 ## Book Cab
-```
-json{
+```json
+{
   "customerId": 1,
   "cabId": 1,
   "fromLocation": "Airport",
