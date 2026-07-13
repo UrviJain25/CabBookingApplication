@@ -250,8 +250,8 @@ json{
 
 ---
 Booking Response
-```
-json{
+```json
+{
   "tripBookingId": 1,
   "customerId": 1,
   "cabId": 1,
