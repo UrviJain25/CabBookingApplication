@@ -80,6 +80,16 @@ public class DriverServiceImpl implements DriverService {
         return response;
     }
 
+    @Override
+    public void deleteDriver(Long driverId) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new RuntimeException("Driver not found with id: " + driverId));
+        // Unlink from cab before deletion
+        driver.setCab(null);
+        driverRepository.save(driver);
+        driverRepository.deleteById(driverId);
+    }
+
     private DriverResponseDto mapToResponseDto(Driver driver) {
         DriverResponseDto dto = new DriverResponseDto();
         dto.setDriverId(driver.getDriverId());

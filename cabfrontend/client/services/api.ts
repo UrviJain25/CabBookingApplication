@@ -177,6 +177,8 @@ export const driverApi = {
     api.post<DriverResponseDto>("/drivers", data),
   update: (driverId: number, data: DriverDto) =>
     api.put<DriverResponseDto>(`/drivers/${driverId}`, data),
+  delete: (driverId: number) =>
+    api.delete<string>(`/drivers/${driverId}`),
   assignToCab: (driverId: number, cabId: number) =>
     api.put<DriverResponseDto>(`/drivers/${driverId}/assign/${cabId}`),
 };

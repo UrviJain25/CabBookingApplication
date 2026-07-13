@@ -17,4 +17,7 @@ public interface DriverService {
     DriverResponseDto assignDriverToCab(Long driverId, Long cabId);
 
     List<DriverResponseDto> getAllDrivers();
+
+    // US-012: Delete Driver
+    void deleteDriver(Long driverId);
 }

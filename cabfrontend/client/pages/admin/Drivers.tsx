@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Plus, Search, RefreshCw, X } from 'lucide-react';
+import { Plus, Search, RefreshCw, Pencil, Trash2, X } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
-import { driverApi, cabApi, DriverResponseDto, DriverDto } from '../../services/api';
+import { driverApi, DriverResponseDto, DriverDto } from '../../services/api';
+
+const emptyForm: DriverDto = {
+  driverName: '',
+  licenceNo: '',
+  mobileNumber: '',
+  email: '',
+};
 
 export default function AdminDrivers() {
   const [drivers, setDrivers] = useState<DriverResponseDto[]>([]);
@@ -10,16 +17,11 @@ export default function AdminDrivers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [editingDriver, setEditingDriver] = useState<DriverResponseDto | null>(null);
+  const [form, setForm] = useState<DriverDto>(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
-
-  // Add driver form state
-  const [form, setForm] = useState<DriverDto>({
-    driverName: '',
-    licenceNo: '',
-    mobileNumber: '',
-    email: '',
-  });
+  const [deleting, setDeleting] = useState<number | null>(null);
 
   const fetchDrivers = async () => {
     setLoading(true);
@@ -38,22 +40,60 @@ export default function AdminDrivers() {
     fetchDrivers();
   }, []);
 
-  const handleAddDriver = async (e: React.FormEvent) => {
+  const openAddForm = () => {
+    setEditingDriver(null);
+    setForm(emptyForm);
+    setFormError('');
+    setShowForm(true);
+  };
+
+  const openEditForm = (driver: DriverResponseDto) => {
+    setEditingDriver(driver);
+    setForm({
+      driverName: driver.driverName,
+      licenceNo: driver.licenceNo,
+      mobileNumber: driver.mobileNumber,
+      email: driver.email,
+    });
+    setFormError('');
+    setShowForm(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setFormError('');
     try {
-      const res = await driverApi.add(form);
-      setDrivers((prev) => [...prev, res.data]);
+      if (editingDriver) {
+        const res = await driverApi.update(editingDriver.driverId, form);
+        setDrivers((prev) =>
+          prev.map((d) => (d.driverId === editingDriver.driverId ? res.data : d))
+        );
+      } else {
+        const res = await driverApi.add(form);
+        setDrivers((prev) => [...prev, res.data]);
+      }
       setShowForm(false);
-      setForm({ driverName: '', licenceNo: '', mobileNumber: '', email: '' });
     } catch (err: any) {
       const data = err.response?.data;
       if (typeof data === 'string') setFormError(data);
       else if (data?.errors) setFormError(Object.values(data.errors).join(', '));
-      else setFormError('Failed to add driver. Check the details and try again.');
+      else setFormError(`Failed to ${editingDriver ? 'update' : 'add'} driver.`);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id: number, name: string) => {
+    if (!confirm(`Delete driver "${name}"?`)) return;
+    setDeleting(id);
+    try {
+      await driverApi.delete(id);
+      setDrivers((prev) => prev.filter((d) => d.driverId !== id));
+    } catch {
+      alert('Failed to delete driver.');
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -70,7 +110,7 @@ export default function AdminDrivers() {
       <Sidebar role="admin" />
       <Header />
 
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64 pt-16">
         <div className="p-4 lg:p-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -88,7 +128,7 @@ export default function AdminDrivers() {
                 Refresh
               </button>
               <button
-                onClick={() => setShowForm(true)}
+                onClick={openAddForm}
                 className="btn-primary flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
@@ -103,12 +143,14 @@ export default function AdminDrivers() {
             </div>
           )}
 
-          {/* Add Driver Modal */}
+          {/* Add / Edit Driver Modal */}
           {showForm && (
             <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="text-lg font-semibold text-gray-900">Add New Driver</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    {editingDriver ? 'Edit Driver' : 'Add New Driver'}
+                  </h2>
                   <button
                     onClick={() => { setShowForm(false); setFormError(''); }}
                     className="text-gray-400 hover:text-gray-600"
@@ -123,7 +165,7 @@ export default function AdminDrivers() {
                   </div>
                 )}
 
-                <form onSubmit={handleAddDriver} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Driver Name</label>
                     <input
@@ -184,10 +226,10 @@ export default function AdminDrivers() {
                       {submitting ? (
                         <span className="flex items-center justify-center gap-2">
                           <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Adding...
+                          {editingDriver ? 'Saving...' : 'Adding...'}
                         </span>
                       ) : (
-                        'Add Driver'
+                        editingDriver ? 'Save Changes' : 'Add Driver'
                       )}
                     </button>
                   </div>
@@ -229,6 +271,7 @@ export default function AdminDrivers() {
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Email</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Rating</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">Cab</th>
+                      <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
@@ -259,6 +302,29 @@ export default function AdminDrivers() {
                           ) : (
                             <span className="text-gray-400 text-sm">Not assigned</span>
                           )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-center gap-3">
+                            <button
+                              onClick={() => openEditForm(d)}
+                              className="text-blue-500 hover:text-blue-700 transition-colors"
+                              title="Edit"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(d.driverId, d.driverName)}
+                              disabled={deleting === d.driverId}
+                              className="text-red-500 hover:text-red-700 transition-colors disabled:opacity-50"
+                              title="Delete"
+                            >
+                              {deleting === d.driverId ? (
+                                <span className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin inline-block" />
+                              ) : (
+                                <Trash2 className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

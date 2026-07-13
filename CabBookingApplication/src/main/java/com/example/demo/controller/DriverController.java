@@ -55,4 +55,11 @@ public class DriverController {
     public ResponseEntity<List<DriverResponseDto>> getAllDrivers() {
         return ResponseEntity.ok(driverService.getAllDrivers());
     }
+
+    @Operation(summary = "Delete driver by ID")
+    @DeleteMapping("/{driverId}")
+    public ResponseEntity<String> deleteDriver(@PathVariable Long driverId) {
+        driverService.deleteDriver(driverId);
+        return ResponseEntity.ok("Driver deleted successfully");
+    }
 }
