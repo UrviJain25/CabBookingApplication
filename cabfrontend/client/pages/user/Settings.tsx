@@ -30,7 +30,7 @@ export default function UserSettings() {
     <div className="min-h-screen bg-gray-50">
       <Sidebar role="user" />
       <Header />
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64 pt-16">
         <div className="p-4 lg:p-8 max-w-2xl">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Settings</h1>

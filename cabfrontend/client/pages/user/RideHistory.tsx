@@ -96,7 +96,7 @@ export default function UserRideHistory() {
       <Sidebar role="user" />
       <Header />
 
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64 pt-16">
         <div className="p-4 lg:p-8 space-y-8">
 
           {/* Header */}

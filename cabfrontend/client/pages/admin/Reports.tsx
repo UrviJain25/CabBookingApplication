@@ -25,7 +25,7 @@ export default function AdminReports() {
     <div className="min-h-screen bg-gray-50">
       <Sidebar role="admin" />
       <Header />
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64 pt-16">
         <div className="p-4 lg:p-8 space-y-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Reports & Analytics</h1>

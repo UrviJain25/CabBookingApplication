@@ -111,7 +111,7 @@ export default function AdminVehicles() {
       <Sidebar role="admin" />
       <Header />
 
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64 pt-16">
         <div className="p-4 lg:p-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">

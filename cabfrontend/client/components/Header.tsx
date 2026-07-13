@@ -1,15 +1,31 @@
 import { Bell, User, LogOut } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
 
 export default function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
+  const menuRef = useRef<HTMLDivElement>(null);
   const username = localStorage.getItem('username') || 'User';
   const userEmail = localStorage.getItem('userEmail') || username;
   const customerName = localStorage.getItem('customerName');
   const displayName = customerName || username;
+  const userRole = localStorage.getItem('userRole') || 'user';
+  const profilePath = userRole === 'admin' ? '/admin/settings' : '/user/settings';
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showUserMenu]);
 
   const handleLogout = async () => {
     try {
@@ -32,7 +48,7 @@ export default function Header() {
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
         </button>
 
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
             className="flex items-center space-x-3 hover:bg-gray-100 px-3 py-2 rounded-lg transition-colors"
@@ -49,7 +65,10 @@ export default function Header() {
                 <p className="text-sm text-gray-500">Signed in as</p>
                 <p className="text-sm font-semibold text-gray-900 truncate">{userEmail}</p>
               </div>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 text-gray-700">
+              <button
+                onClick={() => { setShowUserMenu(false); navigate(profilePath); }}
+                className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 text-gray-700"
+              >
                 <User className="w-4 h-4" />
                 <span>Profile</span>
               </button>
