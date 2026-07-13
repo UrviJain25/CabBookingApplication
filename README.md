@@ -11,7 +11,9 @@ The Cab Booking Management System allows administrators and customers to perform
 - Customer Registration
 - Customer Profile Management
 - User Login & Logout
-- Cab Management
+- Cab Management (Add / Update / Delete / View Available Cabs)
+- Driver Management (Add / Update / Assign Driver to Cab)
+- Cab Booking
 - Secure Password Storage
 - API Documentation using Swagger
 
@@ -83,7 +85,17 @@ CabBookingApplication
 ## Cab Module
 
 - Add Cab
+- Update Cab
+- Delete Cab
 - View Available Cabs
+
+## Driver Module
+- Add Driver
+- Update Driver
+- Assign Driver to Cab
+
+## Booking Module
+- Book Cab
 
 ## Security
 
@@ -102,6 +114,8 @@ CabBookingApplication
 - users
 - customer
 - cab
+- drivers
+- trip_booking
 
 Hibernate automatically creates the database tables.
 
@@ -146,6 +160,22 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 | POST | /cabs |
 | GET | /cabs |
 
+
+## Driver APIs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | /drivers |
+| GET | /drivers |
+| PUT | /drivers{driverId} |
+| PUt | /drivers/{driverId}/assign/{cabId} |
+
+## Booking APIs
+
+| Method | Endpoint |
+|---------|----------|
+| POST | /bookings |
+
 ---
 
 # 📥 Sample Request
@@ -179,6 +209,31 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ---
 
+## Add Driver
+---
+```json
+{
+  "driverName": "Ramesh Kumar",
+  "licenceNo": "DL123456",
+  "mobileNumber": "9999999999",
+  "email": "ramesh@test.com"
+}
+```
+---
+
+---
+
+## Book Cab
+```json
+{
+  "customerId": 1,
+  "cabId": 1,
+  "fromLocation": "Airport",
+  "toLocation": "Downtown"
+}
+```
+---
+
 # 📤 Sample Response
 
 ```json
@@ -191,6 +246,27 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 }
 ```
 
+---
+
+---
+Booking Response
+```json
+{
+  "tripBookingId": 1,
+  "customerId": 1,
+  "cabId": 1,
+  "cabNumber": "UK07AB1234",
+  "driverId": 1,
+  "driverName": "Ramesh Kumar",
+  "fromLocation": "Airport",
+  "toLocation": "Downtown",
+  "fromDateTime": "2026-07-13T10:15:00",
+  "toDateTime": null,
+  "status": true,
+  "distanceInKm": 0,
+  "bill": 0
+}
+```
 ---
 
 # ⚙️ How to Run
