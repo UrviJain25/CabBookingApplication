@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://cabbooking-backend-urvi-eacgeufxeedydjey.centralindia-01.azurewebsites.net",
   withCredentials: true, // IMPORTANT: backend uses HttpSession
   headers: {
     "Content-Type": "application/json",
