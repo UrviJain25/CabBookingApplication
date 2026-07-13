@@ -24,6 +24,10 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
+      - name: Give execute permission to Maven Wrapper
+        working-directory: CabBookingApplication
+        run: chmod +x mvnw
+      
       - name: Build with Maven
         working-directory: CabBookingApplication
         run: ./mvnw clean package
