@@ -381,12 +381,22 @@ http://localhost:8080/swagger-ui/index.html
 
 Swagger provides interactive API documentation where APIs can be tested directly from the browser.
 
+## Frontend-
+- Navigate to the frontend directory: cd cabfrontend
+- Install dependencies: pnpm install (or npm install)
+- Configure environment — create/edit .env with VITE_API_BASE_URL=http://localhost:8080
+- Start the development server: pnpm dev (or npm run dev)
+- Frontend starts at http://localhost:5173
+- Build for production: pnpm build
+
+
 
 ---
 
 # 🏗️ Architecture
 
 ```
+Backend
 Client
 
 ↓
@@ -405,10 +415,36 @@ Repository
 
 MySQL Database
 ```
+```
+Frontend
+Login Page
+    |
+    v
+Role Check (localStorage)
+    |
+    +------------------+------------------+
+    |   Admin Panel    |    User Panel    |
+    |  - Dashboard     |  - Dashboard     |
+    |  - Bookings      |  - Book a Ride   |
+    |  - Drivers       |  - My Bookings   |
+    |  - Vehicles      |  - Live Tracking |
+    |  - Customers     |  - Ride History  |
+    |  - Tracking      |  - Settings      |
+    |  - Reports       |                  |
+    |  - Settings      |                  |
+    +------------------+------------------+
+              |
+              v
+      Axios API Layer (api.ts)
+              |
+              v
+   Spring Boot Backend (port 8080)
+
 
 The project follows Layered Architecture for better maintainability and separation of concerns.
 
 ---
+```
 
 # 🚀 Future Enhancements
 
