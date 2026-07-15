@@ -65,6 +65,56 @@ CabBookingApplication
 ├── pom.xml
 └── README.md
 ```
+```
+Frontend 
+cabfrontend/
+|
++-- client/
+|   +-- App.tsx                  (Root app with routing & protected routes)
+|   +-- global.css               (Global styles)
+|   |
+|   +-- components/
+|   |   +-- Header.tsx           (Top navigation header)
+|   |   +-- Sidebar.tsx          (Side navigation bar)
+|   |   +-- ui/                  (Reusable Radix UI / Shadcn components)
+|   |
+|   +-- pages/
+|   |   +-- Login.tsx            (Login page, shared for admin & user)
+|   |   +-- NotFound.tsx         (404 page)
+|   |   |
+|   |   +-- admin/               (Admin-only pages)
+|   |   |   +-- Dashboard.tsx
+|   |   |   +-- Bookings.tsx
+|   |   |   +-- Drivers.tsx
+|   |   |   +-- Vehicles.tsx
+|   |   |   +-- Customers.tsx
+|   |   |   +-- LiveTracking.tsx
+|   |   |   +-- Reports.tsx
+|   |   |   +-- Settings.tsx
+|   |   |
+|   |   +-- user/                (User-only pages)
+|   |       +-- Dashboard.tsx
+|   |       +-- BookRide.tsx
+|   |       +-- Bookings.tsx
+|   |       +-- LiveTracking.tsx
+|   |       +-- RideHistory.tsx
+|   |       +-- Settings.tsx
+|   |
+|   +-- services/
+|   |   +-- api.ts               (Axios API service layer)
+|   |
+|   +-- hooks/                   (Custom React hooks)
+|   +-- lib/                     (Utility functions)
+|
++-- public/                      (Static assets)
++-- index.html                   (App entry point)
++-- vite.config.ts
++-- tailwind.config.ts
++-- tsconfig.json
++-- package.json
++-- .env
+
+```
 
 ---
 
@@ -81,6 +131,10 @@ CabBookingApplication
 - User Logout
 - BCrypt Password Encryption
 - HTTP Session Management
+- Role-based login (Admin / User)
+- Protected routes using localStorage role session
+- Auto-redirect based on user role
+
 
 ## Cab Module
 
@@ -106,6 +160,8 @@ CabBookingApplication
 ## API Documentation
 
 - Swagger UI Integration
+
+
 
 ---
 
@@ -177,6 +233,8 @@ $2a$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 | POST | /bookings |
 
 ---
+
+
 
 # 📥 Sample Request
 
